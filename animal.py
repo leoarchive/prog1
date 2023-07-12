@@ -6,21 +6,23 @@ class TipoAnimal(Enum):
     Passaro=3
 
 class Animal:
+    animais=[]
     __slots__=['__tipo','__especie','__nome','__dono']
     def __init__(self,tipo:TipoAnimal,especie:str,nome:str,dono:'Cliente')->None:
         self.tipo=tipo
         self.especie=especie
         self.nome=nome
         self.dono=dono
+        Animal.animais.append(self)
 
     @property
-    def tipo(self)->TipoAnimal: return self.tipo
+    def tipo(self)->TipoAnimal: return self.__tipo
     @property
-    def especie(self)->str: return self.especie
+    def especie(self)->str: return self.__especie
     @property
-    def nome(self)->str: return self.nome
+    def nome(self)->str: return self.__nome
     @property
-    def dono(self)->'Cliente': return self.dono
+    def dono(self)->'Cliente': return self.__dono
 
     @tipo.setter
     def tipo(self,tipo:TipoAnimal)->None:
@@ -50,29 +52,36 @@ class Animal:
         else: raise TypeError('Nome deve ser uma string')
 
     @dono.setter
-    def dono(self,nome:'Cliente')->None:
+    def dono(self,dono:'Cliente')->None:
         if not hasattr(self,'__dono'):
             self.__dono=None
         
-        if nome.__class__.__name__ == 'Cliente':
+        if dono.__class__.__name__ == 'Cliente':
             self.__dono=dono
         else: raise TypeError('Dono deve ser um Cliente')
 
+    def __str__(self)->str:
+        return f'Espécie: {self.especie}; Nome: {self.nome}; Dono: {self.dono.nome}.'
+
+    def falar(self, animal:str)->str:
+        return f"O {animal} faz "
+    
+
 class Cao(Animal):
     def __init__(self,especie:str,nome:str,dono:'Cliente')->None:
-        super(TipoAnimal.Cao,especie,nome,dono)
-    def acoar()->str:
-        return "AU AU!"
+         super().__init__(TipoAnimal.Cao,especie,nome,dono)
+    def falar(self)->str:
+        return super().falar('Cachorro') + "AU AU!"
 
 class Gato(Animal):
     def __init__(self,especie:str,nome:str,dono:'Cliente')->None:
-         super(TipoAnimal.Gato,especie,nome,dono)
-    def miar(self)->str:
-        return "MIAU!"
+         super().__init__(TipoAnimal.Gato,especie,nome,dono)
+    def falar(self)->str:
+        return super().falar('Gato') + "MIAU!"
 
 class Passaro(Animal):
     def __init__(self,especie:str,nome:str,dono:'Cliente')->None:
-         super(TipoAnimal.Passaro,especie,nome,dono)
-    def piar(self)->str:
-        return "PIU PIU!"
+         super().__init__(TipoAnimal.Passaro,especie,nome,dono)
+    def falar(self)->str:
+        return super().falar('Pássaro') + "PIU PIU!"
     

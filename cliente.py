@@ -1,19 +1,21 @@
 class Cliente:
+    clientes=[]
     __slots__=['__nome','__codigo','__documento','__endereco']
     def __init__(self,nome:str,codigo:int,documento:str,endereco:str)->None:
         self.nome=nome
         self.codigo=codigo
         self.documento=documento
         self.endereco=endereco
+        Cliente.clientes.append(self)
 
     @property
-    def nome(self)->str: return self.nome
+    def nome(self)->str: return self.__nome
     @property
-    def codigo(self)->str: return self.codigo
+    def codigo(self)->str: return self.__codigo
     @property
-    def documento(self)->str: return self.documento
+    def documento(self)->str: return self.__documento
     @property
-    def endereco(self)->str: return self.endereco
+    def endereco(self)->str: return self.__endereco
 
     @nome.setter
     def nome(self,nome:str)->None:
@@ -38,7 +40,7 @@ class Cliente:
         if not hasattr(self,'__documento'):
             self.__documento=None
         
-        if isinstance(documento,int):
+        if isinstance(documento,str):
             self.__documento=documento
         else: raise TypeError('Documento deve ser uma string')
 
@@ -47,6 +49,9 @@ class Cliente:
         if not hasattr(self,'__endereco'):
             self.__endereco=None
         
-        if isinstance(endereco,int):
+        if isinstance(endereco,str):
             self.__endereco=endereco
         else: raise TypeError('Endereco deve ser uma string')
+    
+    def __str__(self)->str:
+        return f'Nome: {self.nome}; Código: {self.codigo}; Documento: {self.documento}; Endereço: {self.endereco}.'
